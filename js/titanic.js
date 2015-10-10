@@ -21,6 +21,16 @@
             .append('g')
                 .attr('class','chart');
 
+          d3.select("body")
+            .append('div')
+            .attr('class','survival_rate')
+            .text('What was your chance of survival?')
+
+          d3.select("body")
+            .append('div')
+            .attr('class','survival_rate')
+            .text('Let\'s find out!')
+
           d3.select("svg")
             .selectAll("circle")
             .data(data)
@@ -50,6 +60,25 @@
                 return 'survived';
               } else if (d['Survived'] == 0) {
                 return 'dead';
+              }
+            });
+
+
+          var surv_data = d3.nest()
+                            .key(function(d) {
+                              return d['Survived'];
+                            })
+                            .rollup(function(leaves){
+                              return leaves.length;
+                            })
+                            .entries(data);
+          d3.selectAll('.survival_rate')
+            .data(surv_data)
+            .text(function(d){
+              if (d['key'] == '0') {
+                return d['values'] + " passengers died.";
+              } else {
+                return d['values'] + " passengers survived.";
               }
             });
         };
