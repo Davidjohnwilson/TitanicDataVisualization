@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="./js/d3.v3.min.js"></script>
+    <script src="./js/line_chart.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/line_chart.css">
+  </head>
+  <body>
+    <h1>What were your chances of survival on the Titanic?</h1>
+
+    <div>
+      <p>This visualization is intended to illustrate the survival rate of various group of passengers on the Titanic.</p>
+    </div>
+
+
+
+
+
+
+
+    <script type="text/javascript">
+    d3.csv("./data/summary_data.csv",function(error1,data_points){
+      d3.csv("./data/path_data.csv",function(error2,data_paths){
+        return draw(data_points,data_paths);
+      });
+    });
+    </script>
+  </body>
+</html>

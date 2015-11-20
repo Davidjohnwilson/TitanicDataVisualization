@@ -66,7 +66,7 @@ surv_died(old)
 print "60+"
 surv_died(older) 
 
-sibsp = titanic_data[titanic_data['SibSp'] == 1]
+sibsp = titanic_data[titanic_data['SibSp'] > 0]
 nosibsp = titanic_data[titanic_data['SibSp'] == 0]
 
 print "SibSp:"
