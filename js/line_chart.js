@@ -27,7 +27,7 @@ function draw(data_points,data_paths) {
         height = 600 - margin;
 
     var circle_svg = d3.select("body")
-      .append("svg")
+      .select("svg")
         .attr("width", width + margin)
         .attr("height", height + margin)
         .attr('class','slope_chart')
@@ -100,11 +100,22 @@ function draw(data_points,data_paths) {
     var line_data = data_path;
     var line_array = [line_data['SurvRate_1'],line_data['SurvRate_2'],line_data['SurvRate_3'],line_data['SurvRate_4']];
 
+    if (line_data.Gender=='female' && line_data.Age == 'older'){
+      var color = 'green';
+      var opacity = 1;
+    } else if (line_data.Gender=='male' && line_data.Age == 'older' && line_data.SibSp == 'hassibsp'){
+      var color = 'red';
+      var opacity = 1;
+    } else {
+      var color = 'grey';
+      var opacity = 0.25;
+    }
+
     d3.select("svg")
     .append('svg:path')
     .attr('d', lineGen(line_array))
-    .attr('stroke', 'grey')
-    .attr('opacity', 0.25)
+    .attr('stroke', color)
+    .attr('opacity', opacity)
     .attr('stroke-width', 2)
     .attr('fill', 'none');
   });
@@ -113,7 +124,8 @@ function draw(data_points,data_paths) {
       .selectAll("circle")
       .data(data_points)
       .enter()
-      .append("circle");
+      .append("circle")
+      .attr('class','nofilter');
 
 
     d3.selectAll("circle")
@@ -138,7 +150,17 @@ function draw(data_points,data_paths) {
       .attr("r", function(d) {
         return circ_rad_scale(d['NumPassengers']);
       })
-      .attr("fill", 'grey')
+      .style("fill", function(d){
+        if (d["Gender"]=='all'){
+          return 'blue';
+        } else if (d["Gender"]=='female' && (d["Age"]=='all' || d["Age"] == 'older')){
+          return 'green';
+        } else if(d["Gender"]=='male' && (d["Age"]=='all' || (d["Age"] == 'older' && (d["SibSp"]=='all' || d["SibSp"]=='hassibsp')))) {
+          return 'red';
+        } else {
+          return 'grey';
+        }
+      })
       .classed("male", function(d){
         if (d["Gender"] == 'male') {
           return true;
@@ -302,7 +324,7 @@ function draw(data_points,data_paths) {
 
   };
 
-function update(data_paths,data_points) {
+function update(gender,age,sibsp) {
 
 
 };

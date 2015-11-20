@@ -1,16 +1,24 @@
+.nofilter{
+	fill: blue;
+	opacity: 0.95;
+}
+
 .male{
-	fill: orange;
+	fill: grey;
+	opacity: 0.95;
 }
 
 .female{
-	fill: green;
+	fill: grey;
+	opacity: 0.95;
 }
 
-.hassibsp{
+
+/*.hassibsp{
 	stroke: blue;
 }
 
 
 .nosibsp{
 	stroke: yellow;
-}
+}*/
