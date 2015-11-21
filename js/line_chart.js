@@ -104,7 +104,7 @@ function draw(data_points,data_paths) {
       var color = 'green';
       var opacity = 1;
     } else if (line_data.Gender=='male' && line_data.Age == 'older' && line_data.SibSp == 'hassibsp'){
-      var color = 'red';
+      var color = 'blue';
       var opacity = 1;
     } else {
       var color = 'grey';
@@ -117,7 +117,13 @@ function draw(data_points,data_paths) {
     .attr('stroke', color)
     .attr('opacity', opacity)
     .attr('stroke-width', 2)
-    .attr('fill', 'none');
+    .attr('fill', 'none')
+    .on('mouseover',function(){
+      d3.select(this).classed('highlight-path',true);
+    })
+    .on('mouseout',function(){
+      d3.select(this).classed('highlight-path',false);
+    });
   });
 
     d3.select("svg")
@@ -152,11 +158,11 @@ function draw(data_points,data_paths) {
       })
       .style("fill", function(d){
         if (d["Gender"]=='all'){
-          return 'blue';
+          return 'orange';
         } else if (d["Gender"]=='female' && (d["Age"]=='all' || d["Age"] == 'older')){
           return 'green';
         } else if(d["Gender"]=='male' && (d["Age"]=='all' || (d["Age"] == 'older' && (d["SibSp"]=='all' || d["SibSp"]=='hassibsp')))) {
-          return 'red';
+          return 'blue';
         } else {
           return 'grey';
         }
@@ -191,6 +197,45 @@ function draw(data_points,data_paths) {
       })
       .text(function(d){
         return d['Age'];
+      }).on("mouseover", function(d) {
+        d3.select(this).classed('highlight',true);
+
+        //Get this bar's x/y values, then augment for the tooltip
+        var xPosition = parseFloat(d3.select(this).attr("cx")) + circ_rad_scale(d3.select(this).attr("NumPassengers"))/2;
+        var yPosition = 40+parseFloat(d3.select(this).attr("cy")) + circ_rad_scale(d3.select(this).attr("NumPassengers"))/2;
+
+        var gender_dict = {'male':'Male','female':'Female','all':'Both'}
+        var age_dict = {'all':'All Ages','child':'0-18','young':'18-30', 'middle': '30-45', 'old': '45-60', 'older': '60+'};          
+        var sibsp_dict = {'hassibsp':'1+','nosibsp':'0','all':'All'}
+
+        //Update the tooltip position and value
+        d3.select("#tooltip")
+          .style("left", xPosition + "px")
+          .style("top", yPosition + "px");
+        d3.select("#tooltip")
+          .select("#tooltip_percentage")
+          .text(d['SurvRate'] + '% survived');
+        d3.select("#tooltip")
+          .select("#tooltip_gender")
+          .text(gender_dict[d['Gender']]);
+        d3.select("#tooltip")
+          .select("#tooltip_age")
+          .text(age_dict[d['Age']]);
+        d3.select("#tooltip")
+          .select("#tooltip_sibsp")
+          .text(sibsp_dict[d['SibSp']]);
+
+        //Show the tooltip
+        d3.select("#tooltip").classed("hidden", false);
+
+      })
+      .on("mouseout", function() {
+
+        d3.select(this).classed('highlight',false);
+
+        //Hide the tooltip
+        d3.select("#tooltip").classed("hidden", true);
+
       });
 
 
