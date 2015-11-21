@@ -1,93 +1,83 @@
 
-//We need a hamming-distance function to compute when
-//two filtered categories are joined by a line. This is
-//precisely when their hamming distance is 1.  
-function hamming(a,b) {
-  if (a.length != b.length) {
-    return -1;
-  }
-
-  var dist = 0;
-
-  for (var i = 0; i < a.length; i++) {
-    if (a[i] != b[i]) {
-      dist++;
-    }
-  }
-
-  return dist
-
-};
-
 function draw(data_points,data_paths) {
 
-    "use strict";
-    var margin = 75,
-        width = 1200 - margin,
-        height = 600 - margin;
+  "use strict";
 
-    var circle_svg = d3.select("body")
-      .select("svg")
-        .attr("width", width + margin)
-        .attr("height", height + margin)
-        .attr('class','slope_chart')
-      .append('g')
-        .attr('class','chart');
+  //Define the size of the visualization
+  //It will be horizontal 2:1
+  var margin = 75,
+      width = 1200 - margin,
+      height = 600 - margin;
 
+  //We select the svg from the html and set the 
+  //width and height. We add a class in case we
+  //want to style it later.   
+  d3.select("body")
+    .select("svg")
+    .attr("width", width + margin)
+    .attr("height", height + margin)
+    .attr('class','slope_chart');
 
-    var vert_scale = d3.scale.linear()
-            .range([height, margin])
-            .domain([0,100]);
+  //We need a scale for the y-scale, running from 
+  //0 to 100.
+  var vert_scale = d3.scale.linear()
+          .range([height, margin])
+          .domain([0,100]);
 
-    var passengers_max = d3.max(data_points, function(d) {
-                              return d['NumPassengers'];
-                          });
+  //To create the radius scale we need the max passengers
+  var passengers_max = d3.max(data_points, function(d) {
+                            return d['NumPassengers'];
+                        });
 
-    var circ_rad_scale = d3.scale.sqrt()
-                           .domain([0,passengers_max])
-                           .range([2,6]);
+  //We define the radius scale - using the square
+  //root scale to ensure we don't increase the
+  //lie factor of the visualization.
+  var circ_rad_scale = d3.scale.sqrt()
+                         .domain([0,passengers_max])
+                         .range([2,6]);
 
-    var vert_l_axis = d3.svg.axis()
-            .scale(vert_scale)
-            .orient("left");
+  //We define the left hand axis using the vertical
+  //scale defined above.
+  var vert_l_axis = d3.svg.axis()
+          .scale(vert_scale)
+          .orient("left");
 
-    var vert_r_axis = d3.svg.axis()
-            .scale(vert_scale)
-            .orient("right"); 
+  //For all but the first axis, we only show the 0 and 
+  //100 tick marks to reduce chart junk
+  var vert_c_axis = d3.svg.axis()
+          .scale(vert_scale)
+          .orient("left")
+          .tickValues([0,100]);                       
 
-    var vert_c_axis = d3.svg.axis()
-            .scale(vert_scale)
-            .orient("left")
-            .tickValues([0,100]);                       
+  //Add the axes and 300px intervals
+  d3.select("svg")
+    .append("g")
+    .attr("class", "y axis")
+    .attr("transform", "translate(" + margin + ",0)")
+    .call(vert_l_axis);
 
-    d3.select("svg")
-      .append("g")
-      .attr("class", "y axis")
-      .attr("transform", "translate(" + margin + ",0)")
-      .call(vert_l_axis);
+  d3.select("svg")
+    .append("g")
+    .attr("class", "y axis")
+    .attr("transform", "translate(" + (margin+300) + ",0)")
+    .call(vert_c_axis);
 
-    d3.select("svg")
-      .append("g")
-      .attr("class", "y axis")
-      .attr("transform", "translate(" + (margin+300) + ",0)")
-      .call(vert_c_axis);
+  d3.select("svg")
+    .append("g")
+    .attr("class", "y axis")
+    .attr("transform", "translate(" + (margin+600) + ",0)")
+    .call(vert_c_axis);
 
-    d3.select("svg")
-      .append("g")
-      .attr("class", "y axis")
-      .attr("transform", "translate(" + (margin+600) + ",0)")
-      .call(vert_c_axis);
+  d3.select("svg")
+    .append("g")
+    .attr("class", "y axis")
+    .attr("transform", "translate(" + (margin+900) + ",0)")
+    .call(vert_c_axis);
 
-
-    d3.select("svg")
-      .append("g")
-      .attr("class", "y axis")
-      .attr("transform", "translate(" + (margin+900) + ",0)")
-      .call(vert_c_axis);
-
-
-
-
+  //We define a line function to use for our paths. We
+  //have to map the x values according to which point
+  //we're plotting, and the y values according to the
+  //vertical scale.
   var lineGen = d3.svg.line()
     .x(function(d,i) {
       return margin-3 + i*300;
@@ -96,35 +86,47 @@ function draw(data_points,data_paths) {
       return vert_scale(d);
     });
 
+  //This code isn't very 'd3-like' however it appears the
+  //easiest way to plot the lines (which are from a different
+  //data source). We cycle through each path.
   data_paths.forEach(function(data_path){
-    var line_data = data_path;
-    var line_array = [line_data['SurvRate_1'],line_data['SurvRate_2'],line_data['SurvRate_3'],line_data['SurvRate_4']];
+    //Pull out the four values to be plotted.
+    var line_array = [data_path['SurvRate_1'],data_path['SurvRate_2'],data_path['SurvRate_3'],data_path['SurvRate_4']];
 
-    if (line_data.Gender=='female' && line_data.Age == 'older'){
-      var color = 'green';
-      var opacity = 1;
-    } else if (line_data.Gender=='male' && line_data.Age == 'older' && line_data.SibSp == 'hassibsp'){
+    //We identify the two highlighted paths - for maximal and 
+    //minimal survival rates. 
+    if (data_path.Gender=='female' && data_path.Age == 'older'){
       var color = 'blue';
+      var opacity = 1;
+    } else if (data_path.Gender=='male' && data_path.Age == 'older' && data_path.SibSp == 'hassibsp'){
+      var color = 'red';
       var opacity = 1;
     } else {
       var color = 'grey';
       var opacity = 0.25;
     }
 
+    //We now add a path for every item in data_paths.
     d3.select("svg")
-    .append('svg:path')
-    .attr('d', lineGen(line_array))
-    .attr('stroke', color)
-    .attr('opacity', opacity)
-    .attr('stroke-width', 2)
-    .attr('fill', 'none')
-    .on('mouseover',function(){
-      d3.select(this).classed('highlight-path',true);
-    })
-    .on('mouseout',function(){
-      d3.select(this).classed('highlight-path',false);
-    });
-  });
+      .append('svg:path')
+      .attr('d', lineGen(line_array)) //Where to plot line
+      .attr('stroke', color)          //Including highlighting
+      .attr('opacity', opacity)       //Including highlighting
+      .attr('stroke-width', 2)
+      .attr('fill', 'none')
+      .on('mouseover',function(){
+        //We want to highlight paths on mouseover
+        d3.select(this).classed('highlight-path',true);
+      })
+      .on('mouseout',function(){
+        //Don't forget to de-highlight on mouseout!
+        d3.select(this).classed('highlight-path',false);
+      });
+  }); //end of for loop
+
+
+// CURRENT COMMENTING POINT
+
 
     d3.select("svg")
       .selectAll("circle")
@@ -158,11 +160,11 @@ function draw(data_points,data_paths) {
       })
       .style("fill", function(d){
         if (d["Gender"]=='all'){
-          return 'orange';
+          return 'purple';
         } else if (d["Gender"]=='female' && (d["Age"]=='all' || d["Age"] == 'older')){
-          return 'green';
-        } else if(d["Gender"]=='male' && (d["Age"]=='all' || (d["Age"] == 'older' && (d["SibSp"]=='all' || d["SibSp"]=='hassibsp')))) {
           return 'blue';
+        } else if(d["Gender"]=='male' && (d["Age"]=='all' || (d["Age"] == 'older' && (d["SibSp"]=='all' || d["SibSp"]=='hassibsp')))) {
+          return 'red';
         } else {
           return 'grey';
         }
@@ -214,7 +216,7 @@ function draw(data_points,data_paths) {
           .style("top", yPosition + "px");
         d3.select("#tooltip")
           .select("#tooltip_percentage")
-          .text(d['SurvRate'] + '% survived');
+          .text(d['SurvRate'] + '% survived of ' + d['NumPassengers'] + ' passengers');
         d3.select("#tooltip")
           .select("#tooltip_gender")
           .text(gender_dict[d['Gender']]);
@@ -369,7 +371,22 @@ function draw(data_points,data_paths) {
 
   };
 
-function update(gender,age,sibsp) {
+//We need a hamming-distance function to compute when
+//two filtered categories are joined by a line. This is
+//precisely when their hamming distance is 1.  
+function hamming(a,b) {
+  if (a.length != b.length) {
+    return -1;
+  }
 
+  var dist = 0;
+
+  for (var i = 0; i < a.length; i++) {
+    if (a[i] != b[i]) {
+      dist++;
+    }
+  }
+
+  return dist
 
 };

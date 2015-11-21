@@ -18,12 +18,12 @@
 }
 
 .highlight{
-	fill: red !important;
+	fill: green !important;
 	opacity: 0.8;
 }
 
 .highlight-path{
-	stroke: red !important;
+	stroke: green !important;
 	opacity: 1 !important;
 	z-index: 1000;
 }
