@@ -2,6 +2,10 @@
   font-family: sans-serif;  
 }
 
+.axis-label{
+	font-weight: bold;
+}
+
 .nofilter{
 	fill: grey;
 	opacity: 0.6;

@@ -1,4 +1,4 @@
-
+//This is our function to draw the D3 graphic.
 function draw(data_points,data_paths) {
 
   "use strict";
@@ -124,269 +124,130 @@ function draw(data_points,data_paths) {
       });
   }); //end of for loop
 
+  //We now add all the circles for the data points. We use
+  //enter as we have not got any data pre-loaded.
+  d3.select("svg")
+    .selectAll("circle")
+    .data(data_points)
+    .enter()
+    .append("circle")
+    .attr('class','nofilter');
 
-// CURRENT COMMENTING POINT
-
-
-    d3.select("svg")
-      .selectAll("circle")
-      .data(data_points)
-      .enter()
-      .append("circle")
-      .attr('class','nofilter');
-
-
-    d3.selectAll("circle")
-      .attr("cx", function(d) {
-          var axis = margin-3;
-
-          if (d['Gender'] != 'all') {
-            axis += 300;
-          }
-          if (d['Age'] != 'all') {
-            axis += 300;
-          }
-          if (d['SibSp'] != 'all') {
-            axis += 300;
-          }
-          
-          return axis;
-      })
-      .attr("cy", function(d) {
-          return vert_scale(d["SurvRate"]);
-      })
-      .attr("r", function(d) {
-        return circ_rad_scale(d['NumPassengers']);
-      })
-      .style("fill", function(d){
-        if (d["Gender"]=='all'){
-          return 'purple';
-        } else if (d["Gender"]=='female' && (d["Age"]=='all' || d["Age"] == 'older')){
-          return 'blue';
-        } else if(d["Gender"]=='male' && (d["Age"]=='all' || (d["Age"] == 'older' && (d["SibSp"]=='all' || d["SibSp"]=='hassibsp')))) {
-          return 'red';
-        } else {
-          return 'grey';
+  //For each circle we now set the position, size, fill,
+  //classes, mouseover behaviour etc 
+  d3.selectAll("circle")
+    .attr("cx", function(d) {
+        var axis = margin-3;
+        if (d['Gender'] != 'all') {
+          axis += 300; //If it has Gender then not first column
         }
-      })
-      .classed("male", function(d){
-        if (d["Gender"] == 'male') {
-          return true;
-        } else {
-          return false;
+        if (d['Age'] != 'all') {
+          axis += 300; //If it has Age then not second column
         }
-      })
-      .classed("female", function(d){
-        if (d["Gender"] == 'female') {
-          return true;
-        } else {
-          return false;
+        if (d['SibSp'] != 'all') {
+          axis += 300; //If it has SibSp then not third column
         }
-      })
-      .classed("hassibsp", function(d){
-        if (d["SibSp"] == 'hassibsp') {
-          return true;
-        } else {
-          return false;
-        }
-      })
-      .classed("nosibsp", function(d){
-        if (d["SibSp"] == 'nosibsp') {
-          return true;
-        } else {
-          return false;
-        }
-      })
-      .text(function(d){
-        return d['Age'];
-      }).on("mouseover", function(d) {
-        d3.select(this).classed('highlight',true);
+        return axis;
+    })
+    .attr("cy", function(d) {
+      //We convert the survival rate to the vertical scale (0-100%)
+      return vert_scale(d["SurvRate"]);
+    })
+    .attr("r", function(d) {
+      //We convert the NumPassengers to the radius circle (recall this
+      //is a squareroot scale)
+      return circ_rad_scale(d['NumPassengers']);
+    })
+    .style("fill", function(d){
+      //We set the fill according to if it is a highlighted path or not
+      if (d["Gender"]=='all'){
+        //We choose purple because it is red+blue :)
+        return 'purple';
+      } else if (d["Gender"]=='female' && (d["Age"]=='all' || d["Age"] == 'older')){
+        //This logic is ugly - but it defines if the circle is in the
+        //female-older highlighted path.
+        return 'blue';
+      } else if(d["Gender"]=='male' && (d["Age"]=='all' || (d["Age"] == 'older' && (d["SibSp"]=='all' || d["SibSp"]=='hassibsp')))) {
+        //This logic is even uglier! It selects circles in the male-
+        //older-hassibsp highlighted path.
+        return 'red';
+      } else {
+        //Everything else we set to just be grey.
+        return 'grey';
+      }
+    })
+    .style("stroke",'black') //Border all circles
+    .on("mouseover", function(d) {
+      //We introduce interaction through mouseover tooltips and highlights.
 
-        //Get this bar's x/y values, then augment for the tooltip
-        var xPosition = parseFloat(d3.select(this).attr("cx")) + circ_rad_scale(d3.select(this).attr("NumPassengers"))/2;
-        var yPosition = 40+parseFloat(d3.select(this).attr("cy")) + circ_rad_scale(d3.select(this).attr("NumPassengers"))/2;
+      //The highlight changes the color of the circle
+      d3.select(this).classed('highlight',true);
 
-        var gender_dict = {'male':'Male','female':'Female','all':'Both'}
-        var age_dict = {'all':'All Ages','child':'0-18','young':'18-30', 'middle': '30-45', 'old': '45-60', 'older': '60+'};          
-        var sibsp_dict = {'hassibsp':'1+','nosibsp':'0','all':'All'}
+      //Get the circle's coordinates, to position the tooltip appropriately
+      var xPosition = parseFloat(d3.select(this).attr("cx")) + circ_rad_scale(d3.select(this).attr("NumPassengers"))/2;
+      var yPosition = 40+parseFloat(d3.select(this).attr("cy")) + circ_rad_scale(d3.select(this).attr("NumPassengers"))/2;
 
-        //Update the tooltip position and value
-        d3.select("#tooltip")
-          .style("left", xPosition + "px")
-          .style("top", yPosition + "px");
-        d3.select("#tooltip")
-          .select("#tooltip_percentage")
-          .text(d['SurvRate'] + '% survived of ' + d['NumPassengers'] + ' passengers');
-        d3.select("#tooltip")
-          .select("#tooltip_gender")
-          .text(gender_dict[d['Gender']]);
-        d3.select("#tooltip")
-          .select("#tooltip_age")
-          .text(age_dict[d['Age']]);
-        d3.select("#tooltip")
-          .select("#tooltip_sibsp")
-          .text(sibsp_dict[d['SibSp']]);
+      //The following are used to decide what text to show in the tooltip
+      var gender_dict = {'male':'Male','female':'Female','all':'Both'}
+      var age_dict = {'all':'All Ages','child':'0-18','young':'18-30', 'middle': '30-45', 'old': '45-60', 'older': '60+'};          
+      var sibsp_dict = {'hassibsp':'1+','nosibsp':'0','all':'All'}
 
-        //Show the tooltip
-        d3.select("#tooltip").classed("hidden", false);
+      //Update the tooltip position
+      d3.select("#tooltip")
+        .style("left", xPosition + "px")
+        .style("top", yPosition + "px");
+      //Update all the text on the tooltip according to the data.
+      d3.select("#tooltip")
+        .select("#tooltip_percentage")
+        .text(d['SurvRate'] + '% survived (' + d['NumPassengers'] + ' passengers)');
+      d3.select("#tooltip")
+        .select("#tooltip_gender")
+        .text(gender_dict[d['Gender']]);
+      d3.select("#tooltip")
+        .select("#tooltip_age")
+        .text(age_dict[d['Age']]);
+      d3.select("#tooltip")
+        .select("#tooltip_sibsp")
+        .text(sibsp_dict[d['SibSp']]);
 
-      })
-      .on("mouseout", function() {
+      //Make sure to show the tooltip!
+      d3.select("#tooltip").classed("hidden", false);
 
-        d3.select(this).classed('highlight',false);
+    })
+    .on("mouseout", function() {
+      //When we leave the circle we turn off the highlight.
+      d3.select(this).classed('highlight',false);
 
-        //Hide the tooltip
-        d3.select("#tooltip").classed("hidden", true);
+      //We also hide the tooltip
+      d3.select("#tooltip").classed("hidden", true);
 
-      });
+    });
 
-
-
-
-
-// var lines = circle_svg
-//   .selectAll("line")
-//   .data(data_points)
-//   .enter()
-//   .append("line")
-//   .attr("x1", function(d,i) {return 100; })
-//   .attr("y1", function(d,i) {return 100; })
-//   .attr("x2", function(d,i,j) {return 400; })
-//   .attr("y2", function(d,i,j) {return 400; })
-// ;
-
-
-
-
-// var line = d3.svg.line()
-//     .x(function(d) {
-//           var axis = margin-3;
-
-//           if (d['Gender'] != 'all') {
-//             axis += 300;
-//           }
-//           if (d['Age'] != 'all') {
-//             axis += 300;
-//           }
-//           if (d['SibSp'] != 'all') {
-//             axis += 300;
-//           }
-          
-//           return axis;
-//       })
-//     .y(function(d) {
-//           return vert_scale(d["SurvRate"]);
-//       })
-//     .interpolate("linear");  
-
-// circle_svg.append("path")
-//     .attr("d", function(d) { return line(data)})
-//     .attr("transform", "translate(0,0)")
-//     .style("stroke-width", 2)
-//             .style("stroke", "steelblue")
-//             .style("fill", "none");
-
-
-
-
-// end of drawing lines
-    // d3.selectAll("circle")
-    //   .attr("cx", function(d,i) {
-    //       return 10 + 20 * (i % num_per_row);
-    //   })
-    //   .attr("cy", function(d,i) {
-    //       return 10 + 20 * Math.floor(i / num_per_row);
-    //   })
-    //   .attr("r", radius)
-    //   .attr("class", function(d){
-    //     if (d['Survived'] == 1) {
-    //       return 'survived';
-    //     } else if (d['Survived'] == 0) {
-    //       return 'dead';
-    //     }
-    //   }).on("mouseover", function(d) {
-
-    //     d3.select(this).style('opacity',1);
-
-    //     //Get this bar's x/y values, then augment for the tooltip
-    //     var xPosition = parseFloat(d3.select(this).attr("cx")) + radius/2;
-    //     var yPosition = 220 + parseFloat(d3.select(this).attr("cy")) + radius/2;
-
-    //     if (d['Survived'] == 1) {
-    //       var survived_string = "Survived";
-    //     } else {
-    //       var survived_string = "Died";
-    //     }
-
-    //     if (d['Survived'] == 1) {
-    //       var survived_class = "passenger_survived_survived";
-    //       var survived_nonclass = "passenger_survived_dead";
-    //     } else {
-    //       var survived_class = "passenger_survived_dead";
-    //       var survived_nonclass = "passenger_survived_survived";
-    //     }
-
-    //     if (d['Sex'] == 'male') {
-    //       var gender_string = "Male";
-    //     } else {
-    //       var gender_string = "Female";
-    //     }              
-
-    //     //Update the tooltip position and value
-    //     d3.select("#tooltip")
-    //       .style("left", xPosition + "px")
-    //       .style("top", yPosition + "px");
-    //     d3.select("#tooltip")
-    //       .select("#passenger_id")
-    //       .text(d['PassengerId']);
-    //     d3.select("#tooltip")
-    //       .select("#passenger_survived")
-    //       .text(survived_string)
-    //       .classed(survived_class,true)
-    //       .classed(survived_nonclass,false);
-    //     d3.select("#tooltip")
-    //       .select("#passenger_gender")
-    //       .text(gender_string);
-    //     d3.select("#tooltip")
-    //       .select("#passenger_age")
-    //       .text(d['Age']);
-    //     d3.select("#tooltip")
-    //       .select("#passenger_sibsp")
-    //       .text(d['SibSp']);
-
-    //     //Show the tooltip
-    //     d3.select("#tooltip").classed("hidden", false);
-
-    //   })
-    //   .on("mouseout", function() {
-
-    //     d3.select(this).style('opacity',0.6);
-
-    //     //Hide the tooltip
-    //     d3.select("#tooltip").classed("hidden", true);
-
-    //   });
-
-
-
-  };
-
-//We need a hamming-distance function to compute when
-//two filtered categories are joined by a line. This is
-//precisely when their hamming distance is 1.  
-function hamming(a,b) {
-  if (a.length != b.length) {
-    return -1;
-  }
-
-  var dist = 0;
-
-  for (var i = 0; i < a.length; i++) {
-    if (a[i] != b[i]) {
-      dist++;
-    }
-  }
-
-  return dist
+  //Finally - we add in the labels to the axes (manually).
+  d3.select('svg')
+    .append('text')
+    .text('Survival Rate')
+    .attr('x',30)
+    .attr('y',560)
+    .classed('axis-label',true);
+  d3.select('svg')
+    .append('text')
+    .text('Gender')
+    .attr('x',350)
+    .attr('y',560)
+    .classed('axis-label',true);
+  d3.select('svg')
+    .append('text')
+    .text('Age')
+    .attr('x',660)
+    .attr('y',560)
+    .classed('axis-label',true);
+  d3.select('svg')
+    .append('text')
+    .text('Sibling/Spouse')
+    .attr('x',920)
+    .attr('y',560)
+    .classed('axis-label',true);
 
 };
+
