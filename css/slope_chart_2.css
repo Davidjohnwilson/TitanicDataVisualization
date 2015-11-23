@@ -1,0 +1,72 @@
+* {
+  font-family: sans-serif;  
+}
+
+.axis-label{
+	font-weight: bold;
+}
+
+.best-class,.worst-class{
+  font-weight: lighter;
+  font-size: small;
+}
+
+.best-class{
+  fill: blue;
+}
+
+.worst-class{
+  fill: red;
+}
+
+.nofilter{
+	fill: grey;
+	opacity: 0.6;
+}
+
+.male{
+	fill: grey;
+	opacity: 0.6;
+}
+
+.female{
+	fill: grey;
+	opacity: 0.6;
+}
+
+.highlight{
+	fill: green !important;
+	opacity: 0.8;
+}
+
+.highlight-path{
+	stroke: green !important;
+	opacity: 1 !important;
+	z-index: 1000;
+}
+
+#tooltip {
+  position: absolute;
+  width: 250px;
+  height: auto;
+  padding: 10px;
+  background-color: white;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+#tooltip.hidden {
+  display: none;
+}
+
+#tooltip p {
+  margin: 0;
+  font-family: sans-serif;
+  font-size: 16px;
+  line-height: 20px;
+}
