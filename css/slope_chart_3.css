@@ -1,0 +1,92 @@
+* {
+  font-family: georgia;  
+}
+
+.graphic-div{
+  display: flex;
+  float: left;
+}
+
+.header{
+  padding-top: 300px;
+}
+
+.axis-label{
+	font-weight: bold;
+  font-variant: small-caps;
+}
+
+.best-class,.worst-class{
+  font-weight: lighter;
+  font-size: small;
+}
+
+.best-class{
+  fill: blue;
+}
+
+.worst-class{
+  fill: red;
+}
+
+.nofilter{
+	fill: grey;
+	opacity: 0.6;
+}
+
+.male{
+	fill: grey;
+	opacity: 0.6;
+}
+
+.female{
+	fill: grey;
+	opacity: 0.6;
+}
+
+.highlight{
+	fill: green !important;
+	opacity: 0.8;
+}
+
+.highlight-path-male{
+  stroke: red !important;
+  opacity: 1 !important;
+  z-index: 1000;
+}
+
+.highlight-path-female{
+  stroke: blue !important;
+  opacity: 1 !important;
+  z-index: 1000;
+}
+
+
+#tooltip {
+  position: absolute;
+  width: 250px;
+  height: auto;
+  padding: 10px;
+  background-color: white;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+#tooltip.hidden {
+  display: none;
+}
+
+#tooltip p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.tooltip-label, #tooltip_percentage, .header{
+  font-variant: small-caps;
+}

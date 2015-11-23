@@ -1,0 +1,11 @@
+id,Gender,Age,SurvRate_1,NumPassengers_1,SurvRate_2,NumPassengers_2,SurvRate_3,NumPassengers_3
+1,male,child,38,891,18,577,33,71
+2,male,young,38,891,18,577,15,180
+3,male,middle,38,891,18,577,22,129
+4,male,old,38,891,18,577,18,54
+5,male,older,38,891,18,577,10,19
+6,female,child,38,891,74,314,67,68
+7,female,young,38,891,74,314,75,90
+8,female,middle,38,891,74,314,78,73
+9,female,old,38,891,74,314,85,27
+10,female,older,38,891,74,314,100,3

@@ -1,0 +1,14 @@
+id,Gender,Age,SurvRate,NumPassengers
+1,all,all,38,891
+2,male,all,18,577
+3,male,child,33,71
+4,male,young,15,180
+5,male,middle,22,129
+6,male,old,18,54
+7,male,older,10,19
+8,female,all,74,314
+9,female,child,67,68
+10,female,young,75,90
+11,female,middle,78,73
+12,female,old,85,27
+13,female,older,100,3
