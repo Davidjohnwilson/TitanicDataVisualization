@@ -1,5 +1,5 @@
 //This is our function to draw the D3 graphic.
-function draw(data_points,data_paths) {
+function draw(data_points,data_paths){
 
   "use strict";
 
@@ -26,7 +26,7 @@ function draw(data_points,data_paths) {
 
   //To create the radius scale we need the max passengers
   var passengers_max = d3.max(data_points, function(d) {
-                            return d['NumPassengers'];
+                            return d.NumPassengers;
                         });
 
   //We define the radius scale - using the square
@@ -92,19 +92,20 @@ function draw(data_points,data_paths) {
   //data source). We cycle through each path.
   data_paths.forEach(function(data_path){
     //Pull out the four values to be plotted.
-    var line_array = [data_path['SurvRate_1'],data_path['SurvRate_2'],data_path['SurvRate_3'],data_path['SurvRate_4']];
+    var line_array = [data_path.SurvRate_1,data_path.SurvRate_2,data_path.SurvRate_3,data_path.SurvRate_4];
 
     //We identify the two highlighted paths - for maximal and 
-    //minimal survival rates. 
+    //minimal survival rates. We first set the default values.
+    var color = 'grey';
+    var opacity = 0.25;
+
+    //We now select the paths.
     if (data_path.Gender=='female' && data_path.Age == 'older'){
-      var color = 'blue';
-      var opacity = 1;
+      color = 'blue';
+      opacity = 1;
     } else if (data_path.Gender=='male' && data_path.Age == 'older' && data_path.SibSp == 'hassibsp'){
-      var color = 'red';
-      var opacity = 1;
-    } else {
-      var color = 'grey';
-      var opacity = 0.25;
+      color = 'red';
+      opacity = 1;
     }
 
     //We now add a path for every item in data_paths.
@@ -139,36 +140,36 @@ function draw(data_points,data_paths) {
   d3.selectAll("circle")
     .attr("cx", function(d) {
         var axis = margin-3;
-        if (d['Gender'] != 'all') {
+        if (d.Gender != 'all') {
           axis += 300; //If it has Gender then not first column
         }
-        if (d['Age'] != 'all') {
+        if (d.Age != 'all') {
           axis += 300; //If it has Age then not second column
         }
-        if (d['SibSp'] != 'all') {
+        if (d.SibSp != 'all') {
           axis += 300; //If it has SibSp then not third column
         }
         return axis;
     })
     .attr("cy", function(d) {
       //We convert the survival rate to the vertical scale (0-100%)
-      return vert_scale(d["SurvRate"]);
+      return vert_scale(d.SurvRate);
     })
     .attr("r", function(d) {
       //We convert the NumPassengers to the radius circle (recall this
       //is a squareroot scale)
-      return circ_rad_scale(d['NumPassengers']);
+      return circ_rad_scale(d.NumPassengers);
     })
     .style("fill", function(d){
       //We set the fill according to if it is a highlighted path or not
-      if (d["Gender"]=='all'){
+      if (d.Gender == 'all'){
         //We choose purple because it is red+blue :)
         return 'purple';
-      } else if (d["Gender"]=='female' && (d["Age"]=='all' || d["Age"] == 'older')){
+      } else if (d.Gender == 'female' && (d.Age == 'all' || d.Age  ==  'older')){
         //This logic is ugly - but it defines if the circle is in the
         //female-older highlighted path.
         return 'blue';
-      } else if(d["Gender"]=='male' && (d["Age"]=='all' || (d["Age"] == 'older' && (d["SibSp"]=='all' || d["SibSp"]=='hassibsp')))) {
+      } else if(d.Gender == 'male' && (d.Age == 'all' || (d.Age  ==  'older' && (d.SibSp == 'all' || d.SibSp == 'hassibsp')))) {
         //This logic is even uglier! It selects circles in the male-
         //older-hassibsp highlighted path.
         return 'red';
@@ -189,9 +190,9 @@ function draw(data_points,data_paths) {
       var yPosition = 40+parseFloat(d3.select(this).attr("cy")) + circ_rad_scale(d3.select(this).attr("NumPassengers"))/2;
 
       //The following are used to decide what text to show in the tooltip
-      var gender_dict = {'male':'Male','female':'Female','all':'Both'}
+      var gender_dict = {'male':'Male','female':'Female','all':'Both'};
       var age_dict = {'all':'All Ages','child':'0-18','young':'18-30', 'middle': '30-45', 'old': '45-60', 'older': '60+'};          
-      var sibsp_dict = {'hassibsp':'1+','nosibsp':'0','all':'All'}
+      var sibsp_dict = {'hassibsp':'1+','nosibsp':'0','all':'All'};
 
       //Update the tooltip position
       d3.select("#tooltip")
@@ -200,16 +201,16 @@ function draw(data_points,data_paths) {
       //Update all the text on the tooltip according to the data.
       d3.select("#tooltip")
         .select("#tooltip_percentage")
-        .text(d['SurvRate'] + '% survived (' + d['NumPassengers'] + ' passengers)');
+        .text(d.SurvRate + '% survived (' + d.NumPassengers + ' passengers)');
       d3.select("#tooltip")
         .select("#tooltip_gender")
-        .text(gender_dict[d['Gender']]);
+        .text(gender_dict[d.Gender]);
       d3.select("#tooltip")
         .select("#tooltip_age")
-        .text(age_dict[d['Age']]);
+        .text(age_dict[d.Age]);
       d3.select("#tooltip")
         .select("#tooltip_sibsp")
-        .text(sibsp_dict[d['SibSp']]);
+        .text(sibsp_dict[d.SibSp]);
 
       //Make sure to show the tooltip!
       d3.select("#tooltip").classed("hidden", false);
@@ -224,7 +225,7 @@ function draw(data_points,data_paths) {
 
     });
 
-  //Finally - we add in the labels to the axes (manually).
+  //We add in the labels to the axes (manually).
   d3.select('svg')
     .append('text')
     .text('Survival Rate')
@@ -250,6 +251,7 @@ function draw(data_points,data_paths) {
     .attr('y',560)
     .classed('axis-label',true);
 
+  //We also add labels to the highlighted paths.
   d3.select('svg')
     .append('text')
     .text('Female, 60+, No Sibling/Spouse - 100%')
