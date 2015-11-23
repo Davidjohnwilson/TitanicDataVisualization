@@ -5,7 +5,7 @@ import matplotlib.pyplot as pyplot
 from pandas import *
 import itertools
 
-titanic_data = pandas.read_csv('./data/summary_data.csv')
+titanic_data = pandas.read_csv('../data/summary_data.csv')
 
 print titanic_data
 
@@ -19,7 +19,7 @@ def hamming_distance(data_1,data_2):
 		dist += 1
 	return dist
 
-with open('./data/link_data.csv', 'wb') as csvfile:
+with open('../data/link_data.csv', 'wb') as csvfile:
 	spamwriter = csv.writer(csvfile, delimiter=',',
 	                        quotechar='|', quoting=csv.QUOTE_MINIMAL)
 	spamwriter.writerow(['id','id1','Gender1','Age1','SibSp1','SurvRate1','NumPassengers1','id2','Gender2','Age2','SibSp2','SurvRate2','NumPassengers2'])

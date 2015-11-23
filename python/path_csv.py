@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as pyplot
 from pandas import *
 
-titanic_data = pandas.read_csv('./data/titanic.csv')
+titanic_data = pandas.read_csv('../data/titanic.csv')
 
 def filter_tit_data(sex,age,sibsp):
 
@@ -29,24 +29,25 @@ def surv_rate(dataset):
 	di = dataset[dataset['Survived']==0]
 	return [len(dataset),int(100.0*len(su)/(len(su)+len(di)))]
 
-gender = ['all','male','female']
-ages = ['all','child','young','middle','old','older']
-sibsp = ['all','hassibsp','nosibsp']
+gender = ['male','female']
+ages = ['child','young','middle','old','older']
+sibsp = ['hassibsp','nosibsp']
 
 
-with open('./data/summary_data.csv', 'wb') as csvfile:
+with open('../data/path_data.csv', 'wb') as csvfile:
 	spamwriter = csv.writer(csvfile, delimiter=',',
 	                        quotechar='|', quoting=csv.QUOTE_MINIMAL)
-	spamwriter.writerow(['id','Gender','Age','SibSp','SurvRate','NumPassengers'])
+	spamwriter.writerow(['id','Gender','Age','SibSp','SurvRate_1','NumPassengers_1','SurvRate_2','NumPassengers_2','SurvRate_3','NumPassengers_3','SurvRate_4','NumPassengers_4'])
 	id_num = 0
 	for g in gender:
 		for a in ages:
 			for s in sibsp:
-				if (g == 'all' and a != 'all') or (a == 'all' and s != 'all'):
-					continue
-				s_r = surv_rate(filter_tit_data(g,a,s))
+				s_r_1 = surv_rate(filter_tit_data('all','all','all'))
+				s_r_2 = surv_rate(filter_tit_data(g,'all','all'))
+				s_r_3 = surv_rate(filter_tit_data(g,a,'all'))
+				s_r_4 = surv_rate(filter_tit_data(g,a,s))
 				id_num += 1
-				spamwriter.writerow([id_num,g,a,s,s_r[1],s_r[0]])
+				spamwriter.writerow([id_num,g,a,s,s_r_1[1],s_r_1[0],s_r_2[1],s_r_2[0],s_r_3[1],s_r_3[0],s_r_4[1],s_r_4[0]])
 
 
 

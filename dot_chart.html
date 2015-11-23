@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="./js/d3.v3.min.js"></script>
+    <script src="./js/dot_chart.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/dot_chart.css">
+    
+
+  </head>
+<body>
+
+<div id="tooltip" class="hidden">
+        <p><strong>Passenger: <span id="passenger_id">1</span></strong></p>
+        <p><strong><span id="passenger_survived" class="passenger_survived_survived">Survived</span></strong></p>
+        <p>Gender: <span id="passenger_gender">Male</span></p>
+        <p>Age: <span id="passenger_age">28</span></p>
+        <p>Number of Siblings/Spouses: <span id="passenger_sibsp">True</span></p>
+</div>
+
+  <script type="text/javascript">
+  d3.csv("./data/titanic.csv",draw);
+  </script>
+</body>
+</html>

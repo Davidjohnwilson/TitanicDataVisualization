@@ -6,6 +6,19 @@
 	font-weight: bold;
 }
 
+.best-class,.worst-class{
+  font-weight: lighter;
+  font-size: small;
+}
+
+.best-class{
+  fill: blue;
+}
+
+.worst-class{
+  fill: red;
+}
+
 .nofilter{
 	fill: grey;
 	opacity: 0.6;

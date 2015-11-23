@@ -40,14 +40,15 @@ function draw(data_points,data_paths) {
   //scale defined above.
   var vert_l_axis = d3.svg.axis()
           .scale(vert_scale)
-          .orient("left");
+          .orient("left")
+          .tickValues([0,25,50,75,100]);
 
   //For all but the first axis, we only show the 0 and 
   //100 tick marks to reduce chart junk
   var vert_c_axis = d3.svg.axis()
           .scale(vert_scale)
           .orient("left")
-          .tickValues([0,100]);                       
+          .tickValues([]);                       
 
   //Add the axes and 300px intervals
   d3.select("svg")
@@ -248,6 +249,20 @@ function draw(data_points,data_paths) {
     .attr('x',920)
     .attr('y',560)
     .classed('axis-label',true);
+
+  d3.select('svg')
+    .append('text')
+    .text('Female, 60+, No Sibling/Spouse - 100%')
+    .attr('x',700)
+    .attr('y',65)
+    .classed('best-class',true);
+  d3.select('svg')
+    .append('text')
+    .text('Male, 60+, No Sibling/Spouse - 0%')
+    .attr('x',790)
+    .attr('y',385)
+    .attr('transform','rotate(9)')
+    .classed('worst-class',true);
 
 };
 

@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as pyplot
 from pandas import *
 
-titanic_data = pandas.read_csv('./data/titanic.csv')
+titanic_data = pandas.read_csv('../data/titanic.csv')
 
 # print titanic_data.tail(1)
 
