@@ -218,6 +218,7 @@ function draw(data_points,data_paths){
 
     });
 
+  //We add in the labels for each circle 
   d3.select("svg")
     .selectAll(".circle-labels")
     .data(data_points)
@@ -225,6 +226,7 @@ function draw(data_points,data_paths){
     .append("text")
     .attr('class','circle-labels');
 
+  //We add all the labels with class .circle-labels
   d3.selectAll(".circle-labels")
     .attr("x", function(d) {
         var axis = margin+15;
@@ -262,31 +264,19 @@ function draw(data_points,data_paths){
     .attr('y',30)
     .attr('transform','rotate(-90)')
     .classed('axis-label',true);
-  // d3.select('svg')
-  //   .append('text')
-  //   .text('Gender')
-  //   .attr('x',345)
-  //   .attr('y',55)
-  //   .classed('axis-label',true);
-  // d3.select('svg')
-  //   .append('text')
-  //   .text('Age')
-  //   .attr('x',660)
-  //   .attr('y',55)
-  //   .classed('axis-label',true);
 
 
   //We also add labels to the highlighted paths.
   d3.select('svg')
     .append('text')
-    .text('Female, over 60 → 100%')
+    .text('Female → over 60 → 100%')
     .attr('x',280)
     .attr('y',420)
     .attr('transform','rotate(-34)')
     .classed('best-class',true);
   d3.select('svg')
     .append('text')
-    .text('Male, over 60 → 10%')
+    .text('Male → over 60 → 10%')
     .attr('x',600)
     .attr('y',641)
     .attr('transform','rotate(10)')
