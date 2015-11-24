@@ -2,11 +2,13 @@
 
 A visualization by David Wilson. 
 
+The visualization can be viewed interactively on its [bl.ocks.org page](http://bl.ocks.org/Davidjohnwilson/raw/beb21c7b18d6a22ded78/).
+
 ###Summary
 
 <!-- Summary - in no more than 4 sentences, briefly introduce your data visualization and add any context that can help readers understand it -->
 
-This visualization is intended to show a user which groups were most and least likely to survive the Titanic, and then allow the user to see they're survival chances. The visualization splits passengers by gender, age, and whether they had a sibling or spouse on board. 
+This visualization is intended to show a user which groups were most and least likely to survive the Titanic, and then allow the user to see they're survival chances. The visualization splits passengers by gender and age, showing clearly that gender was a major factor in survivability. 
 
 
 ###Design
@@ -52,3 +54,4 @@ The improved graphic is shown in `index_3.html`. Informal feedback from the init
 
 [Interactive Data Visualization for the Web by Scott Murray](http://chimera.labs.oreilly.com/books/1230000000345) - example code adapted to make tooltips.
 
+I liked the styling of this [visualization](http://bl.ocks.org/lemahdi/raw/0d4c9f42c467dadc52ed/) that was posted on the Nanodegree group on Google+ so I tried to emulate some of it. 
