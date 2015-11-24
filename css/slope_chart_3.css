@@ -87,6 +87,10 @@
   line-height: 20px;
 }
 
-.tooltip-label, #tooltip_percentage, .header{
+.tooltip-label, #tooltip_percentage, .header, .circle-labels{
   font-variant: small-caps;
+}
+
+.circle-labels {
+  font-size: 10px;
 }

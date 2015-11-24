@@ -28,6 +28,10 @@ To add interaction, I allowed users to hover over paths to highlight them in gre
 
 <!-- Feedback - include all feedback you received from others on your visualization from the first sketch to the final visualization-->
 
+Feedback was collected through this Google Form: [Form](https://docs.google.com/forms/d/1JM7kqiOV1nOZzfnkoC2_QB4Nkv0dSJ73jujjesDxdFs/viewform?usp=send_form). 
+
+The first respondant pointed out that the initial version of the graphic was confusing to understand. In particular, the relationship between each axis was unclear.
+
 ###Resources
 
 <!-- Resources - list any sources you consulted to create your visualization -->

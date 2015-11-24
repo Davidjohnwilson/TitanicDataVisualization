@@ -218,6 +218,42 @@ function draw(data_points,data_paths){
 
     });
 
+  d3.select("svg")
+    .selectAll(".circle-labels")
+    .data(data_points)
+    .enter()
+    .append("text")
+    .attr('class','circle-labels');
+
+  d3.selectAll(".circle-labels")
+    .attr("x", function(d) {
+        var axis = margin+15;
+        if (d.Gender != 'all') {
+          axis += 300-3; //If it has Gender then not first column
+        }
+        if (d.Age != 'all') {
+          axis += 300-3; //If it has Age then not second column
+        }
+        return axis;
+    })
+    .attr("y", function(d) {
+      //We convert the survival rate to the vertical scale (0-100%)
+      return vert_scale(d.SurvRate)+3;
+    })
+    .text(function(d){
+      var gender_dict = {'male':'Male','female':'Female','all':'Both'};
+      var age_dict = {'all':'All Ages','child':'0-18','young':'18-30', 'middle': '30-45', 'old': '45-60', 'older': '60+'};          
+
+      if (d.Gender == 'all') {
+        return 'All'; //If it has Gender then not first column
+      }
+      if (d.Age == 'all') {
+        return gender_dict[d.Gender]; //If it has Age then not second column
+      }
+      return gender_dict[d.Gender]+', '+age_dict[d.Age]; 
+    });
+
+
   //We add in the labels to the axes (manually).
   d3.select('svg')
     .append('text')
@@ -226,31 +262,31 @@ function draw(data_points,data_paths){
     .attr('y',30)
     .attr('transform','rotate(-90)')
     .classed('axis-label',true);
-  d3.select('svg')
-    .append('text')
-    .text('Gender')
-    .attr('x',345)
-    .attr('y',55)
-    .classed('axis-label',true);
-  d3.select('svg')
-    .append('text')
-    .text('Age')
-    .attr('x',660)
-    .attr('y',55)
-    .classed('axis-label',true);
+  // d3.select('svg')
+  //   .append('text')
+  //   .text('Gender')
+  //   .attr('x',345)
+  //   .attr('y',55)
+  //   .classed('axis-label',true);
+  // d3.select('svg')
+  //   .append('text')
+  //   .text('Age')
+  //   .attr('x',660)
+  //   .attr('y',55)
+  //   .classed('axis-label',true);
 
 
   //We also add labels to the highlighted paths.
   d3.select('svg')
     .append('text')
-    .text('Female, 60+ - 100%')
+    .text('Female, over 60 → 100%')
     .attr('x',280)
     .attr('y',420)
     .attr('transform','rotate(-34)')
     .classed('best-class',true);
   d3.select('svg')
     .append('text')
-    .text('Male, 60+ - 0%')
+    .text('Male, over 60 → 10%')
     .attr('x',600)
     .attr('y',641)
     .attr('transform','rotate(10)')
