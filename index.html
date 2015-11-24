@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./js/d3.v3.min.js"></script>
+  <script src="./js/slope_chart_3.js"></script>
+  <link rel="stylesheet" type="text/css" href="./css/slope_chart_3.css">
+</head>
+<body>
+
+  <div class="graphic-div">
+    <svg></svg>
+  </div>
+
+  <div>
+
+    <h2 class='header'>What were your chances of survival on the Titanic?</h2>
+
+    <p>
+      Your chances were universally higher if you are a woman, and if you were also over 60, you were virtually guaranteed to survive. On the other hand, if you were a man who was also over 60, you had almost no chance to survive. Interestingly, the order of survival of age groups with men is almost the exact opposite as with women: younger men had the best chance of survival, whilst older women had a better chance.
+    </p>
+    <p>
+      This data is sourced from <a href="https://www.kaggle.com/c/titanic">Kaggle</a> and only represents a subset of passengers on the Titanic. Color is used to indicate gender, and the size of the points represent the number of passengers fitting that criteria.
+    </p>
+  </div>
+
+
+
+
+
+
+
+  <div id="tooltip" class="hidden">
+    <p><strong><span id="tooltip_percentage">% Survived</span></strong></p>
+    <p><span class="tooltip-label">Gender:</span> <span id="tooltip_gender">Male</span></p>
+    <p><span class="tooltip-label">Age:</span> <span id="tooltip_age">60+</span></p>
+  </div>
+
+  <script type="text/javascript">
+  d3.csv("./data/summary_data_2.csv",function(error1,data_points){
+    d3.csv("./data/path_data_2.csv",function(error2,data_paths){
+      return draw(data_points,data_paths);
+    });
+  });
+  </script>
+</body>
+</html>
