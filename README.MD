@@ -15,13 +15,13 @@ This visualization is intended to show a user which groups were most and least l
 
 Initially, I decided on a visualization that showed a circle for every passenger in the data set, colored according to if they survived or not. This would then be filterable so users could see the relative survivability of various classes. However, after implementing (see `dot_chart.html`) I realized that although visually interesting, it was very hard to actually compare any classes.
 
-![First visualization](images/viz_1.jpg)
+<img src="images/viz_1.jpg" height="400" align="center">
 
 I therefore decided on a slope chart, to try and clearly show how the segmentation of the passengers by gender, age, and sibling/spouse affects survivability. As well as showing the changes in survivability, I also used the size of the circle at each node to show the number of passengers in each class.
 
 In particular, I wanted it to be clear that female passengers unanimously had better survivability than male passengers. As part of this, I wanted to highlight the class with 100% survivability (Female, 60+, No Sibling/Spouse) and the class with 0% survivability (Male, 60+, No Sibling/Spouse).
 
-![First visualization](images/viz_2.jpg)
+<img src="images/viz_2.jpg" height="400" align="center">
 
 I highlighted the slopes corresponding to these classes in blue and red (blue having a positive connotation, red having a negative connotation). I also removed the scale values for all but the leftmost axis to avoid chart junk. I added labels to each axis, and to the two highlighted classes.
 
@@ -34,17 +34,17 @@ To add interaction, I allowed users to hover over paths to highlight them in gre
 
 Feedback was collected through this Google Form: [Form](https://docs.google.com/forms/d/1JM7kqiOV1nOZzfnkoC2_QB4Nkv0dSJ73jujjesDxdFs/viewform?usp=send_form). The responses can be seen here: [Responses](https://docs.google.com/forms/d/1JM7kqiOV1nOZzfnkoC2_QB4Nkv0dSJ73jujjesDxdFs/viewanalytics) (note that if the responses cannot be viewed, submitting a blank form will provide a link to the analytics after the final question).
 
-The respondants pointed out that the initial version of the graphic was confusing to understand. In particular, the relationship between each axis was unclear and at least one reviewer thought the graph should be read from right to left. 
+The respondants pointed out that the initial version of the graphic was confusing to understand. In particular, the relationship between each axis was unclear (especially the last two axes) and at least one reviewer thought the graph should be read from right to left. 
 
 I realised that I was trying to show too much on a single graph, so I decided to remove the Sibling/Spouse filtering from the visualization. This left a male/female split that then leads to an age split. The fact that the main relationship my reviewers inferred was the male/female split (and they explicitly said they did not understand the relationship between Sibling Spouse) suggests that removing this filter will not harm the value of the graphic - in fact by removing something that is unclear it will hopefully increase the value of the graphic.
 
-![First visualization](images/viz_3.jpg)
+<img src="images/viz_3.jpg" height="400" align="center">
 
 Cutting down the filtering so much allows for a much cleaner graphic. The pared down filtering also allowed me to make the visualization 'portrait' rather than 'landscape', moving the explanation text to the right. Having longer axes accentuates the relationships and separates the data points more clearly.
 
 The smaller set of data and new shape also allows for labels on each node without too much chart junk. Hopefully this alleviates the misunderstanding of the fact the ages split the gender, not the ridership directly.
 
-The improved graphic is shown in `index_3.html`.
+The improved graphic is shown in `index_3.html`. Informal feedback from the initial reviewers suggest this visualization is much clearer and more interesting.
 
 ###Resources
 
