@@ -28,9 +28,17 @@ To add interaction, I allowed users to hover over paths to highlight them in gre
 
 <!-- Feedback - include all feedback you received from others on your visualization from the first sketch to the final visualization-->
 
-Feedback was collected through this Google Form: [Form](https://docs.google.com/forms/d/1JM7kqiOV1nOZzfnkoC2_QB4Nkv0dSJ73jujjesDxdFs/viewform?usp=send_form). 
+Feedback was collected through this Google Form: [Form](https://docs.google.com/forms/d/1JM7kqiOV1nOZzfnkoC2_QB4Nkv0dSJ73jujjesDxdFs/viewform?usp=send_form). The responses can be seen here: [Responses](https://docs.google.com/forms/d/1JM7kqiOV1nOZzfnkoC2_QB4Nkv0dSJ73jujjesDxdFs/viewanalytics).
 
-The first respondant pointed out that the initial version of the graphic was confusing to understand. In particular, the relationship between each axis was unclear.
+The respondants pointed out that the initial version of the graphic was confusing to understand. In particular, the relationship between each axis was unclear and at least one reviewer thought the graph should be read from right to left. 
+
+I realised that I was trying to show too much on a single graph, so I decided to remove the Sibling/Spouse filtering from the visualization. This left a male/female split that then leads to an age split. The fact that the main relationship my reviewers inferred was the male/female split (and they explicitly said they did not understand the relationship between Sibling Spouse) suggests that removing this filter will not harm the value of the graphic - in fact by removing something that is unclear it will hopefully increase the value of the graphic.
+
+Cutting down the filtering so much allows for a much cleaner graphic. The pared down filtering also allowed me to make the visualization 'portrait' rather than 'landscape', moving the explanation text to the right. Having longer axes accentuates the relationships and separates the data points more clearly.
+
+The smaller set of data and new shape also allows for labels on each node without too much chart junk. Hopefully this alleviates the misunderstanding of the fact the ages split the gender, not the ridership directly.
+
+The improved graphic is shown in `index_3.html`.
 
 ###Resources
 
